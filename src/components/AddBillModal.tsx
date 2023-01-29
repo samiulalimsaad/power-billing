@@ -17,7 +17,7 @@ export default function AddBillingModal({
     setIsOpen,
     bill,
 }: {
-    bill: billInterface;
+    bill?: billInterface;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
     const [addBill] = useAddBillMutation();

@@ -10,13 +10,13 @@ const Bill = ({ bill }: { bill: billInterface }) => {
 
     return (
         <>
-            <tr>
+            <tr className="text-center">
                 <th>{bill._id}</th>
                 <td>{bill.fullName}</td>
                 <td>{bill.email}</td>
                 <td>{bill.phone}</td>
                 <td>{bill.paidAmount}</td>
-                <td className="flex items-center  gap-2">
+                <td className="flex items-center justify-center gap-2">
                     <button
                         className="btn btn-warning btn-sm"
                         onClick={() => setIsOpen(true)}
