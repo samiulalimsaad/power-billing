@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import Bills from "./components/Bills";
 import Header from "./components/Header";
 import Pagination from "./components/Pagination";
@@ -12,6 +13,7 @@ function App() {
                 <Bills />
                 <Pagination />
             </div>
+            <Toaster position="top-right" reverseOrder={false} />
         </div>
     );
 }
