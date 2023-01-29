@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { billInterface } from "../../../interfaces/bill.interface";
 import { apiSlice } from "../apiSlice";
 
 export const billsApi = apiSlice.injectEndpoints({
@@ -52,7 +53,7 @@ export const billsApi = apiSlice.injectEndpoints({
                                 /* @ts-ignore:disable-next-line */
                                 "getBills",
                                 undefined,
-                                (draft) =>
+                                (draft: billInterface[]) =>
                                     draft.filter((v) => v._id !== data._id)
                             )
                         );
