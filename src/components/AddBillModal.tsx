@@ -1,34 +1,38 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Dispatch, SetStateAction } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAddBillMutation } from "../redux/features/bill/billApi";
+import { billInterface } from "../interfaces/bill.interface";
+import {
+    useAddBillMutation,
+    useEditBillMutation,
+} from "../redux/features/bill/billApi";
 import { billValidationSchema } from "../utils/validationSchema";
-const initialValues = {
+const initialValues: billInterface = {
     fullName: "",
     email: "",
     phone: "",
-    paidAmount: "",
+    paidAmount: 0,
 };
 
 export default function AddBillingModal({
     setIsOpen,
+    bill,
 }: {
+    bill: billInterface;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
     const [addBill] = useAddBillMutation();
-
-    const navigate = useNavigate();
+    const [editBill] = useEditBillMutation();
 
     const submitHandler = async (
-        values: typeof initialValues,
+        values: billInterface,
         { setSubmitting }: { setSubmitting: (arg: boolean) => void }
     ) => {
         try {
-            console.log("first");
-            const { data } = (await addBill(values)) as {
-                data: { success: boolean };
-            };
-            console.log(data);
+            if (bill?._id) {
+                await editBill({ id: bill._id, data: values });
+            } else {
+                await addBill(values);
+            }
             setSubmitting(false);
             setIsOpen(false);
         } catch (error) {
@@ -38,7 +42,7 @@ export default function AddBillingModal({
 
     return (
         <Formik
-            initialValues={initialValues}
+            initialValues={bill?._id ? bill : initialValues}
             validationSchema={billValidationSchema}
             onSubmit={submitHandler}
         >
@@ -100,9 +104,10 @@ export default function AddBillingModal({
                             <span className="label-text">Payable Amount</span>
                         </label>
                         <Field
-                            type="text"
+                            type="number"
                             name="paidAmount"
-                            placeholder="mount"
+                            placeholder="amount"
+                            min={0}
                             className="input input-bordered w-full "
                             required
                         />
@@ -121,7 +126,7 @@ export default function AddBillingModal({
                             className="btn btn-block btn-success"
                             type="submit"
                         >
-                            Add bill
+                            {bill?._id ? "Update bill" : "Add bill"}
                         </button>
                     </div>
                 </Form>
