@@ -1,4 +1,6 @@
+import { InformationCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { loginValidationSchema } from "../utils/validationSchema";
@@ -9,6 +11,7 @@ const initialValues = {
 };
 
 const Login = () => {
+    const [error, setError] = useState("");
     const [login] = useLoginMutation();
 
     const navigate = useNavigate();
@@ -19,12 +22,14 @@ const Login = () => {
     ) => {
         try {
             const { data } = (await login(values)) as {
-                data: { success: boolean };
+                data: { success: boolean; error: string };
             };
             if (data.success) {
                 setTimeout(() => {
                     navigate("/");
                 }, 2000);
+            } else {
+                setError(data.error);
             }
             setSubmitting(false);
         } catch (error) {
@@ -47,6 +52,22 @@ const Login = () => {
                                     Login
                                 </h1>
                                 <div className="divider"></div>
+                                {error && (
+                                    <div className="alert alert-error shadow-lg">
+                                        <div>
+                                            <InformationCircleIcon className="h-8 w-8" />
+                                            <span>{error}</span>
+                                        </div>
+                                        <div className="flex-none">
+                                            <button
+                                                className="btn btn-sm btn-ghost btn-circle"
+                                                onClick={() => setError("")}
+                                            >
+                                                <XMarkIcon className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text">
