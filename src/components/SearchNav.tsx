@@ -13,7 +13,7 @@ const SearchNav = () => {
                         <input
                             type="text"
                             placeholder="Search"
-                            className="input input-bordered input-sm"
+                            className="input input-bordered input-sm text-slate-900"
                         />
                     </div>
                 </div>

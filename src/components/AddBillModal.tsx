@@ -1,6 +1,6 @@
 export default function AddBillingModal() {
     return (
-        <div>
+        <form>
             <div className="form-control w-full ">
                 <label className="label">
                     <span className="label-text">Full Name</span>
@@ -9,6 +9,7 @@ export default function AddBillingModal() {
                     type="text"
                     placeholder="Type here"
                     className="input input-bordered w-full "
+                    required
                 />
             </div>
             <div className="form-control w-full ">
@@ -19,6 +20,7 @@ export default function AddBillingModal() {
                     type="email"
                     placeholder="Type here"
                     className="input input-bordered w-full "
+                    required
                 />
             </div>
             <div className="form-control w-full ">
@@ -29,6 +31,7 @@ export default function AddBillingModal() {
                     type="text"
                     placeholder="Type here"
                     className="input input-bordered w-full "
+                    required
                 />
             </div>
             <div className="form-control w-full ">
@@ -39,12 +42,15 @@ export default function AddBillingModal() {
                     type="text"
                     placeholder="Type here"
                     className="input input-bordered w-full "
+                    required
                 />
             </div>
 
             <div className="form-control w-full my-4">
-                <button className="btn btn-block btn-success">Add bill</button>
+                <button className="btn btn-block btn-success" type="submit">
+                    Add bill
+                </button>
             </div>
-        </div>
+        </form>
     );
 }
