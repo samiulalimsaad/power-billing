@@ -4,13 +4,8 @@ import { billInterface } from "../interfaces/bill.interface";
 import { useGetBillsQuery } from "../redux/features/bill/billApi";
 import Bill from "./Bill";
 
-const Bills = () => {
-    const {
-        data: bills,
-        isLoading,
-        isError,
-        error,
-    } = useGetBillsQuery(undefined);
+const Bills = ({ page }: { page: number }) => {
+    const { data: bills, isLoading, isError, error } = useGetBillsQuery(page);
 
     console.log(error);
     const navigate = useNavigate();
@@ -29,7 +24,7 @@ const Bills = () => {
         <div className="overflow-x-auto my-4">
             <table className="table table-compact w-full">
                 <thead>
-                    <tr className="">
+                    <tr className="text-center">
                         <th>Billing Id</th>
                         <th>Full Name</th>
                         <th>Email</th>
@@ -39,7 +34,7 @@ const Bills = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {bills?.map((bill: billInterface) => (
+                    {bills?.bills?.map((bill: billInterface) => (
                         <Bill key={bill._id} bill={bill} />
                     ))}
                 </tbody>
