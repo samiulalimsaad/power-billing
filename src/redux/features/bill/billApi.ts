@@ -7,6 +7,9 @@ export const billsApi = apiSlice.injectEndpoints({
         getBills: builder.query({
             query: (page) => `/billing-list?page=${page || 1}`,
         }),
+        getSearchedBills: builder.query({
+            query: (text) => `/billing-search?text=${text || ""}`,
+        }),
         getBillAmount: builder.query({
             query: () => `/billing-total`,
             providesTags: ["total"],
@@ -216,6 +219,7 @@ export const billsApi = apiSlice.injectEndpoints({
 
 export const {
     useGetBillsQuery,
+    useGetSearchedBillsQuery,
     useGetBillAmountQuery,
     useAddBillMutation,
     useEditBillMutation,
