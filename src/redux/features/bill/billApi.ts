@@ -18,10 +18,51 @@ export const billsApi = apiSlice.injectEndpoints({
                 { queryFulfilled, dispatch, getState }
             ) => {
                 try {
+                    dispatch(
+                        apiSlice.util.updateQueryData(
+                            /* @ts-ignore:disable-next-line */
+                            "getBills",
+                            undefined,
+                            (draft: billInterface[]) => {
+                                draft.unshift({
+                                    ...arg,
+                                    _id: "generating id...",
+                                });
+                            }
+                        )
+                    );
+
                     const { data } = await queryFulfilled;
 
                     if (data?._id) {
+                        dispatch(
+                            apiSlice.util.updateQueryData(
+                                /* @ts-ignore:disable-next-line */
+                                "getBills",
+                                undefined,
+                                (draft: billInterface[]) => {
+                                    const bill = draft.find(
+                                        (v) => v._id === "generating id..."
+                                    );
+                                    bill!._id = data._id;
+                                }
+                            )
+                        );
                         toast.success("Bill added successfully!");
+                    } else {
+                        dispatch(
+                            apiSlice.util.updateQueryData(
+                                /* @ts-ignore:disable-next-line */
+                                "getBills",
+                                undefined,
+                                (draft: billInterface[]) =>
+                                    draft.filter(
+                                        (v) => v._id !== "generating id..."
+                                    )
+                            )
+                        );
+
+                        toast.error("Bill adding failed!");
                     }
                 } catch (error) {
                     toast.error((error as Error)?.message);
