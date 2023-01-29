@@ -5,7 +5,7 @@ import { apiSlice } from "../apiSlice";
 export const billsApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getBills: builder.query({
-            query: () => `/billing-list`,
+            query: (page) => `/billing-list?page=${page || 1}`,
         }),
         addBill: builder.mutation({
             query: (data) => ({
@@ -22,9 +22,9 @@ export const billsApi = apiSlice.injectEndpoints({
                         apiSlice.util.updateQueryData(
                             /* @ts-ignore:disable-next-line */
                             "getBills",
-                            undefined,
-                            (draft: billInterface[]) => {
-                                draft.unshift({
+                            1,
+                            (draft: { bills: billInterface[] }) => {
+                                draft?.bills.unshift({
                                     ...arg,
                                     _id: "generating id...",
                                 });
@@ -39,9 +39,9 @@ export const billsApi = apiSlice.injectEndpoints({
                             apiSlice.util.updateQueryData(
                                 /* @ts-ignore:disable-next-line */
                                 "getBills",
-                                undefined,
-                                (draft: billInterface[]) => {
-                                    const bill = draft.find(
+                                1,
+                                (draft: { bills: billInterface[] }) => {
+                                    const bill = draft.bills.find(
                                         (v) => v._id === "generating id..."
                                     );
                                     bill!._id = data._id;
@@ -54,18 +54,29 @@ export const billsApi = apiSlice.injectEndpoints({
                             apiSlice.util.updateQueryData(
                                 /* @ts-ignore:disable-next-line */
                                 "getBills",
-                                undefined,
-                                (draft: billInterface[]) =>
-                                    draft.filter(
+                                1,
+                                (draft: { bills: billInterface[] }) =>
+                                    draft.bills.filter(
                                         (v) => v._id !== "generating id..."
                                     )
                             )
                         );
-
                         toast.error("Bill adding failed!");
                     }
                 } catch (error) {
-                    toast.error((error as Error)?.message);
+                    dispatch(
+                        apiSlice.util.updateQueryData(
+                            /* @ts-ignore:disable-next-line */
+                            "getBills",
+                            1,
+                            (draft: { bills: billInterface[] }) =>
+                                draft.bills.filter(
+                                    (v) => v._id !== "generating id..."
+                                )
+                        )
+                    );
+                    // @ts-ignore
+                    toast.error(error?.data?.message || "Bill adding failed!");
                 }
             },
         }),
@@ -83,6 +94,19 @@ export const billsApi = apiSlice.injectEndpoints({
                     const { data } = await queryFulfilled;
 
                     if (data?._id) {
+                        dispatch(
+                            apiSlice.util.updateQueryData(
+                                /* @ts-ignore:disable-next-line */
+                                "getBills",
+                                1,
+                                (draft: { bills: billInterface[] }) => {
+                                    let bill = draft.bills.findIndex(
+                                        (v) => v._id === data._id
+                                    );
+                                    draft.bills[bill] = data;
+                                }
+                            )
+                        );
                         toast.success("Bill updated successfully!");
                     }
                 } catch (error) {
@@ -107,9 +131,16 @@ export const billsApi = apiSlice.injectEndpoints({
                             apiSlice.util.updateQueryData(
                                 /* @ts-ignore:disable-next-line */
                                 "getBills",
-                                undefined,
-                                (draft: billInterface[]) =>
-                                    draft.filter((v) => v._id !== data._id)
+                                1,
+                                (draft: {
+                                    bills: billInterface[];
+                                    count: number;
+                                }) => {
+                                    const bills = draft.bills.filter(
+                                        (v) => v._id !== data._id
+                                    );
+                                    return { bills, count: draft.count };
+                                }
                             )
                         );
 
