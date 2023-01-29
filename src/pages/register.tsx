@@ -1,15 +1,16 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../redux/features/auth/authApi";
-import { loginValidationSchema } from "../utils/validationSchema";
+import { useRegisterMutation } from "../redux/features/auth/authApi";
+import { signUpValidationSchema } from "../utils/validationSchema";
 
 const initialValues = {
+    fullName: "",
     email: "",
     password: "",
+    phone: "",
 };
-
-const Login = () => {
-    const [login] = useLoginMutation();
+const Register = () => {
+    const [register] = useRegisterMutation();
 
     const navigate = useNavigate();
 
@@ -18,7 +19,8 @@ const Login = () => {
         { setSubmitting }: { setSubmitting: (arg: boolean) => void }
     ) => {
         try {
-            const { data } = (await login(values)) as {
+            console.log("first");
+            const { data } = (await register(values)) as {
                 data: { success: boolean };
             };
             console.log(data);
@@ -34,20 +36,44 @@ const Login = () => {
     };
 
     return (
-        <div className="hero min-h-screen bg-base-content text-base-100">
-            <div className="hero-content flex-col lg:flex-row-reverse">
-                <div className="card flex-shrink-0 w-full shadow-2xl bg-base-100 text-base-content">
+        <div className="hero min-h-screen bg-base-content text-base-200">
+            <div className="hero-content flex-col lg:flex-row">
+                <div className="card w-full  shadow-2xl bg-base-100 text-base-content">
                     <Formik
                         initialValues={initialValues}
-                        validationSchema={loginValidationSchema}
+                        validationSchema={signUpValidationSchema}
                         onSubmit={submitHandler}
                     >
                         {({ isSubmitting }) => (
                             <Form className="card-body">
-                                <h1 className="text-2xl font-semibold text-center">
-                                    Login
-                                </h1>
+                                <div className="text-center ">
+                                    <h1 className="text-2xl font-bold text-slate-800">
+                                        Register
+                                    </h1>
+                                </div>
                                 <div className="divider"></div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text">
+                                            full Name
+                                        </span>
+                                    </label>
+                                    <Field
+                                        type="text"
+                                        name="fullName"
+                                        placeholder="fullName"
+                                        className="input input-bordered"
+                                        required
+                                    />
+                                    <label className="label">
+                                        <span className="label-text text-error">
+                                            <ErrorMessage
+                                                name="fullName"
+                                                component="div"
+                                            />
+                                        </span>
+                                    </label>
+                                </div>
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text">
@@ -55,7 +81,7 @@ const Login = () => {
                                         </span>
                                     </label>
                                     <Field
-                                        type="text"
+                                        type="email"
                                         name="email"
                                         placeholder="email"
                                         className="input input-bordered"
@@ -73,6 +99,28 @@ const Login = () => {
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text">
+                                            Phone
+                                        </span>
+                                    </label>
+                                    <Field
+                                        type="text"
+                                        name="phone"
+                                        placeholder="phone"
+                                        className="input input-bordered"
+                                        required
+                                    />
+                                    <label className="label">
+                                        <span className="label-text text-error">
+                                            <ErrorMessage
+                                                name="phone"
+                                                component="div"
+                                            />
+                                        </span>
+                                    </label>
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text">
                                             Password
                                         </span>
                                     </label>
@@ -81,6 +129,7 @@ const Login = () => {
                                         name="password"
                                         placeholder="password"
                                         className="input input-bordered"
+                                        required
                                     />
                                     <label className="label">
                                         <span className="label-text text-error">
@@ -93,20 +142,21 @@ const Login = () => {
                                 </div>
                                 <div className="form-control mt-6">
                                     <button
+                                        type="submit"
                                         className="btn btn-primary"
                                         disabled={isSubmitting}
-                                        type="submit"
                                     >
-                                        Login
+                                        Register
                                     </button>
                                 </div>
-                                <div className="divider">OR</div>
+
+                                <div className="divider">Or</div>
                                 <div className="form-control  text-center">
                                     <Link
                                         className="link text-primary"
-                                        to="/register"
+                                        to="/login"
                                     >
-                                        Register
+                                        Login
                                     </Link>
                                 </div>
                             </Form>
@@ -118,4 +168,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;
