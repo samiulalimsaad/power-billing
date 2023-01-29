@@ -13,6 +13,20 @@ export const billsApi = apiSlice.injectEndpoints({
                 method: "POST",
                 body: data,
             }),
+            onQueryStarted: async (
+                arg,
+                { queryFulfilled, dispatch, getState }
+            ) => {
+                try {
+                    const { data } = await queryFulfilled;
+
+                    if (data?._id) {
+                        toast.success("Bill added successfully!");
+                    }
+                } catch (error) {
+                    toast.error((error as Error)?.message);
+                }
+            },
         }),
         editBill: builder.mutation({
             query: ({ id, data }) => ({
@@ -28,7 +42,7 @@ export const billsApi = apiSlice.injectEndpoints({
                     const { data } = await queryFulfilled;
 
                     if (data?._id) {
-                        toast.success("Profile updated successfully!");
+                        toast.success("Bill updated successfully!");
                     }
                 } catch (error) {
                     toast.error((error as Error)?.message);

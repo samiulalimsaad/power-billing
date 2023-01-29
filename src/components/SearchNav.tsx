@@ -27,7 +27,7 @@ const SearchNav = () => {
                 </div>
             </div>
             <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="Add a New Bill">
-                <AddBillingModal />
+                <AddBillingModal setIsOpen={setIsOpen} />
             </Modal>
         </>
     );

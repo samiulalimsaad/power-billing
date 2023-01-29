@@ -8,7 +8,6 @@ const Bill = ({ bill }: { bill: billInterface }) => {
             <td>{bill.email}</td>
             <td>{bill.phone}</td>
             <td>{bill.paidAmount}</td>
-            <td>Canada</td>
             <td className="flex items-center  gap-2">
                 <button className="btn btn-warning btn-sm">Edit</button>
                 <div className="divider-vertical"></div>
