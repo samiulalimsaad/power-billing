@@ -1,13 +1,29 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { billInterface } from "../interfaces/bill.interface";
 import { useGetBillsQuery } from "../redux/features/bill/billApi";
 import Bill from "./Bill";
 
 const Bills = () => {
-    const { data: bills } = useGetBillsQuery(undefined);
+    const {
+        data: bills,
+        isLoading,
+        isError,
+        error,
+    } = useGetBillsQuery(undefined);
+
+    console.log(error);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // @ts-ignore
+        if ((isError && error?.status === 401) || error?.status === 403)
+            navigate("/login");
+    }, [isError, error]);
 
     console.log(bills);
 
-    if (!bills) return <h1>Loading...</h1>;
+    if (isLoading) return <h1>Loading...</h1>;
 
     return (
         <div className="overflow-x-auto my-4">
@@ -23,7 +39,7 @@ const Bills = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {bills.map((bill: billInterface) => (
+                    {bills?.map((bill: billInterface) => (
                         <Bill key={bill._id} bill={bill} />
                     ))}
                 </tbody>
