@@ -1,6 +1,14 @@
+import { billInterface } from "../interfaces/bill.interface";
+import { useGetBillsQuery } from "../redux/features/bill/billApi";
 import Bill from "./Bill";
 
 const Bills = () => {
+    const { data: bills } = useGetBillsQuery(undefined);
+
+    console.log(bills);
+
+    if (!bills) return <h1>Loading...</h1>;
+
     return (
         <div className="overflow-x-auto my-4">
             <table className="table table-compact w-full">
@@ -15,8 +23,8 @@ const Bills = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {new Array(10).fill("@_@").map((_, i) => (
-                        <Bill />
+                    {bills.map((bill: billInterface) => (
+                        <Bill key={bill._id} bill={bill} />
                     ))}
                 </tbody>
             </table>
