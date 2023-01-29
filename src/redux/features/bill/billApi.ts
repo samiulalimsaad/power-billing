@@ -7,6 +7,11 @@ export const billsApi = apiSlice.injectEndpoints({
         getBills: builder.query({
             query: (page) => `/billing-list?page=${page || 1}`,
         }),
+        getBillAmount: builder.query({
+            query: () => `/billing-total`,
+            providesTags: ["total"],
+        }),
+
         addBill: builder.mutation({
             query: (data) => ({
                 url: "/add-billing",
@@ -28,6 +33,19 @@ export const billsApi = apiSlice.injectEndpoints({
                                     ...arg,
                                     _id: "generating id...",
                                 });
+                            }
+                        )
+                    );
+                    dispatch(
+                        apiSlice.util.updateQueryData(
+                            /* @ts-ignore:disable-next-line */
+                            "getBillAmount",
+                            undefined,
+                            (draft: string) => {
+                                console.log(JSON.stringify(draft));
+                                return (
+                                    parseInt(draft) + parseInt(arg.paidAmount)
+                                );
                             }
                         )
                     );
@@ -61,6 +79,20 @@ export const billsApi = apiSlice.injectEndpoints({
                                     )
                             )
                         );
+                        dispatch(
+                            apiSlice.util.updateQueryData(
+                                /* @ts-ignore:disable-next-line */
+                                "getBillAmount",
+                                undefined,
+                                (draft: string) => {
+                                    console.log(JSON.stringify(draft));
+                                    return (
+                                        parseInt(draft) -
+                                        parseInt(arg.paidAmount)
+                                    );
+                                }
+                            )
+                        );
                         toast.error("Bill adding failed!");
                     }
                 } catch (error) {
@@ -73,6 +105,19 @@ export const billsApi = apiSlice.injectEndpoints({
                                 draft.bills.filter(
                                     (v) => v._id !== "generating id..."
                                 )
+                        )
+                    );
+                    dispatch(
+                        apiSlice.util.updateQueryData(
+                            /* @ts-ignore:disable-next-line */
+                            "getBillAmount",
+                            undefined,
+                            (draft: string) => {
+                                console.log(JSON.stringify(draft));
+                                return (
+                                    parseInt(draft) - parseInt(arg.paidAmount)
+                                );
+                            }
                         )
                     );
                     // @ts-ignore
@@ -113,6 +158,7 @@ export const billsApi = apiSlice.injectEndpoints({
                     toast.error((error as Error)?.message);
                 }
             },
+            invalidatesTags: ["total"],
         }),
         deleteBill: builder.mutation({
             query: (id) => ({
@@ -143,6 +189,20 @@ export const billsApi = apiSlice.injectEndpoints({
                                 }
                             )
                         );
+                        dispatch(
+                            apiSlice.util.updateQueryData(
+                                /* @ts-ignore:disable-next-line */
+                                "getBillAmount",
+                                undefined,
+                                (draft: string) => {
+                                    console.log(JSON.stringify(draft));
+                                    return (
+                                        parseInt(draft) -
+                                        parseInt(data.paidAmount)
+                                    );
+                                }
+                            )
+                        );
 
                         toast.success("Bill deleted successfully!");
                     }
@@ -156,6 +216,7 @@ export const billsApi = apiSlice.injectEndpoints({
 
 export const {
     useGetBillsQuery,
+    useGetBillAmountQuery,
     useAddBillMutation,
     useEditBillMutation,
     useDeleteBillMutation,
