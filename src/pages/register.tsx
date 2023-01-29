@@ -19,11 +19,9 @@ const Register = () => {
         { setSubmitting }: { setSubmitting: (arg: boolean) => void }
     ) => {
         try {
-            console.log("first");
             const { data } = (await register(values)) as {
                 data: { success: boolean };
             };
-            console.log(data);
             if (data.success) {
                 setTimeout(() => {
                     navigate("/");

@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-console.log({ baseUrl: `${import.meta.env.VITE_APP_SERVER_URL}/api` });
-
 const baseQuery = fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_APP_SERVER_URL}/api`,
     prepareHeaders: async (headers, { getState, endpoint }) => {

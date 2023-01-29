@@ -21,7 +21,6 @@ const Login = () => {
             const { data } = (await login(values)) as {
                 data: { success: boolean };
             };
-            console.log(data);
             if (data.success) {
                 setTimeout(() => {
                     navigate("/");

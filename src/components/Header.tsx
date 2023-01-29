@@ -3,7 +3,6 @@ import { useGetBillAmountQuery } from "../redux/features/bill/billApi";
 const Header = () => {
     const { data: total, isLoading } = useGetBillAmountQuery(undefined);
 
-    console.log(total);
     if (isLoading) return <div>Loading...</div>;
 
     return (

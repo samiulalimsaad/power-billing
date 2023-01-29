@@ -7,7 +7,6 @@ import Bill from "./Bill";
 const Bills = ({ page }: { page: number }) => {
     const { data: bills, isLoading, isError, error } = useGetBillsQuery(page);
 
-    console.log(error);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -15,8 +14,6 @@ const Bills = ({ page }: { page: number }) => {
         if ((isError && error?.status === 401) || error?.status === 403)
             navigate("/login");
     }, [isError, error]);
-
-    console.log(bills);
 
     if (isLoading) return <h1>Loading...</h1>;
 

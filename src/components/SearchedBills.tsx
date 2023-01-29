@@ -14,7 +14,6 @@ const SearchedBills = () => {
         error,
     } = useGetSearchedBillsQuery(search);
 
-    console.log(error);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,8 +21,6 @@ const SearchedBills = () => {
         if ((isError && error?.status === 401) || error?.status === 403)
             navigate("/login");
     }, [isError, error]);
-
-    console.log(bills);
 
     if (isLoading) return <h1>Loading...</h1>;
 

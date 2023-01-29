@@ -44,12 +44,8 @@ export const billsApi = apiSlice.injectEndpoints({
                             /* @ts-ignore:disable-next-line */
                             "getBillAmount",
                             undefined,
-                            (draft: string) => {
-                                console.log(JSON.stringify(draft));
-                                return (
-                                    parseInt(draft) + parseInt(arg.paidAmount)
-                                );
-                            }
+                            (draft: string) =>
+                                parseInt(draft) + parseInt(arg.paidAmount)
                         )
                     );
 
@@ -87,13 +83,8 @@ export const billsApi = apiSlice.injectEndpoints({
                                 /* @ts-ignore:disable-next-line */
                                 "getBillAmount",
                                 undefined,
-                                (draft: string) => {
-                                    console.log(JSON.stringify(draft));
-                                    return (
-                                        parseInt(draft) -
-                                        parseInt(arg.paidAmount)
-                                    );
-                                }
+                                (draft: string) =>
+                                    parseInt(draft) - parseInt(arg.paidAmount)
                             )
                         );
                         toast.error("Bill adding failed!");
@@ -115,12 +106,8 @@ export const billsApi = apiSlice.injectEndpoints({
                             /* @ts-ignore:disable-next-line */
                             "getBillAmount",
                             undefined,
-                            (draft: string) => {
-                                console.log(JSON.stringify(draft));
-                                return (
-                                    parseInt(draft) - parseInt(arg.paidAmount)
-                                );
-                            }
+                            (draft: string) =>
+                                parseInt(draft) - parseInt(arg.paidAmount)
                         )
                     );
                     // @ts-ignore
@@ -197,13 +184,8 @@ export const billsApi = apiSlice.injectEndpoints({
                                 /* @ts-ignore:disable-next-line */
                                 "getBillAmount",
                                 undefined,
-                                (draft: string) => {
-                                    console.log(JSON.stringify(draft));
-                                    return (
-                                        parseInt(draft) -
-                                        parseInt(data.paidAmount)
-                                    );
-                                }
+                                (draft: string) =>
+                                    parseInt(draft) - parseInt(data.paidAmount)
                             )
                         );
 
