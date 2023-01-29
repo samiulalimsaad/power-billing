@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { billInterface } from "../interfaces/bill.interface";
 import AddBillingModal from "./AddBillModal";
+import DeleteBillingModal from "./DeleteBill";
 import Modal from "./utils/ui/Modal";
 
 const Bill = ({ bill }: { bill: billInterface }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
 
     return (
         <>
@@ -22,11 +24,23 @@ const Bill = ({ bill }: { bill: billInterface }) => {
                         Edit
                     </button>
                     <div className="divider-vertical"></div>
-                    <button className="btn btn-error btn-sm">delete</button>
+                    <button
+                        className="btn btn-error btn-sm"
+                        onClick={() => setDeleteModal(true)}
+                    >
+                        delete
+                    </button>
                 </td>
             </tr>
             <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="Add a New Bill">
                 <AddBillingModal setIsOpen={setIsOpen} bill={bill} />
+            </Modal>
+            <Modal
+                isOpen={deleteModal}
+                setIsOpen={setDeleteModal}
+                title="Delete Bill"
+            >
+                <DeleteBillingModal setIsOpen={setDeleteModal} bill={bill} />
             </Modal>
         </>
     );
